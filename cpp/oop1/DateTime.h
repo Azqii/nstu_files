@@ -9,68 +9,68 @@
 
 class DateTime {
 private:
-    int year, // Год
-        month, // Месяц
-        day, // День
-        hour, // Час
-        minute; // Минута
+    int year, // Год.
+        month, // Месяц.
+        day, // День.
+        hour, // Час.
+        minute; // Минута.
 
     // Поле с динамическим выделением памяти для хранения чисел месяца, введенного при инициализации объекта.
     // При использовании конструктора без параметров хранит в себе число 0.
     // Сделано исключительно в учебных целях, поле с практической пользой для данного класса я придумать не смог.
     int *days;
 
-    std::string dateAsString; // Строковое представление даты
+    std::string dateAsString; // Строковое представление даты.
 
-    static int objectsCounter; // Статический счетчик существующих объектов
+    static int objectsCounter; // Статический счетчик существующих объектов.
 
 private:
-    void setDateAsString();
+    void setDateAsString(); // Сеттер для поля строкового представления даты.
 
-    void setYear(int value);
+    void setYear(int value); // Сеттер для поля года.
 
-    void setMonth(int value);
+    void setMonth(int value); // Сеттер для поля месяца.
 
-    void setDay(int value);
+    void setDay(int value); // Сеттер для поля дня.
 
-    void setHour(int value);
+    void setHour(int value); // Сеттер для поля часа.
 
-    void setMinute(int value);
+    void setMinute(int value); // Сеттер для поля минуты.
 
-    static int daysInMonth(int monthNumber, int yearNumber);
+    static int daysInMonth(int monthNumber, int yearNumber); // Метод для определения количества дней в месяце.
 
 public:
-    DateTime(int year, int month, int day, int hour, int minute);
+    DateTime(int year, int month, int day, int hour, int minute); // Конструктор с параметрами.
 
-    DateTime();
+    DateTime(); // Конструктор по умолчанию (без параметров).
 
-    DateTime(const DateTime &other);
+    DateTime(const DateTime &other); // Конструктор копирования.
 
-    ~DateTime();
+    ~DateTime(); // Деструктор.
 
-    void plusYear();
+    void plusYear(); // Прибавляет 1 год.
 
-    void minusYear();
+    void minusYear(); // Отнимает 1 год.
 
-    void plusMonth();
+    void plusMonth(); // Прибавляет 1 месяц.
 
-    void minusMonth();
+    void minusMonth(); // Отнимает 1 месяц.
 
-    void plusDay();
+    void plusDay(); // Прибавляет 1 день.
 
-    void minusDay();
+    void minusDay(); // Отнимает 1 день.
 
-    void plusHour();
+    void plusHour(); // Прибавляет 1 час.
 
-    void minusHour();
+    void minusHour(); // Отнимает 1 час.
 
-    void plusMinute();
+    void plusMinute(); // Прибавляет 1 минуту.
 
-    void minusMinute();
+    void minusMinute(); // Отнимает 1 минуту.
 
-    void printDateTime();
+    void printDateTime(); // Распечатывает время и дату.
 
-    static int getObjectsCounter();
+    static int getObjectsCounter(); // Геттер счетчика объектов.
 };
 
 

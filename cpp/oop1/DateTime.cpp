@@ -4,7 +4,7 @@
 
 #include "DateTime.h"
 
-int DateTime::objectsCounter = 0;
+int DateTime::objectsCounter = 0; // Присваивание значения статическому полю.
 
 void DateTime::setYear(int value) {
     this->year = value;
@@ -19,10 +19,10 @@ void DateTime::setMonth(int value) {
 
 int DateTime::daysInMonth(int monthNumber, int yearNumber) {
     switch (monthNumber) {
-        case 0:
+        case 0: // Для конструктора копирования объекта созданного конструктором по умолчанию.
             return 1;
         case 2:
-            if (yearNumber % 4 == 0 && (yearNumber % 100 != 0 || yearNumber % 400 == 0))
+            if (yearNumber % 4 == 0 && (yearNumber % 100 != 0 || yearNumber % 400 == 0)) // Проверка на високосный год
                 return 29;
             else
                 return 28;
