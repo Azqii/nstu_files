@@ -69,6 +69,8 @@ public:
     void minusMinute();
 
     void printDateTime();
+
+    static int getObjectsCounter();
 };
 
 

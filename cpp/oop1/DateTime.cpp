@@ -66,7 +66,8 @@ void DateTime::setDateAsString() {
 }
 
 DateTime::DateTime(int year, int month, int day, int hour, int minute) {
-    std::cout << "Вызван конструктор с параметрами";
+    std::cout << "Вызван конструктор с параметрами для объекта в " << this << std::endl;
+
     this->setYear(year);
     this->setMonth(month);
     this->setDay(day);
@@ -85,6 +86,8 @@ DateTime::DateTime(int year, int month, int day, int hour, int minute) {
 }
 
 DateTime::DateTime() {
+    std::cout << "Вызван конструктор по умолчанию для объекта в " << this << std::endl;
+
     this->year = 0;
     this->month = 0;
     this->day = 0;
@@ -100,6 +103,8 @@ DateTime::DateTime() {
 }
 
 DateTime::DateTime(const DateTime &other) {
+    std::cout << "Вызван конструктор копирования для объекта в " << this << std::endl;
+
     this->year = other.year;
     this->month = other.month;
     this->day = other.day;
@@ -118,6 +123,8 @@ DateTime::DateTime(const DateTime &other) {
 }
 
 DateTime::~DateTime() {
+    std::cout << "Вызван деструктор для объекта в " << this << std::endl;
+
     delete[] this->days;
     DateTime::objectsCounter--;
 }
@@ -173,5 +180,9 @@ void DateTime::minusMinute() {
 }
 
 void DateTime::printDateTime() {
-    std::cout << this->dateAsString;
+    std::cout << this->dateAsString << std::endl;
+}
+
+int DateTime::getObjectsCounter() {
+    return DateTime::objectsCounter;
 }
