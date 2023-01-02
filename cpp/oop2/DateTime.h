@@ -6,6 +6,7 @@
 #define OOP2_DATETIME_H
 
 #include <iostream>
+#include <string>
 
 
 class DateTime {
@@ -79,7 +80,7 @@ public:
 
     DateTime operator-(const DateTime &other) const; // Перегрузка оператора вычитания
 
-    operator char *();
+    operator char *(); // Преобразование к типу char*
 };
 
 

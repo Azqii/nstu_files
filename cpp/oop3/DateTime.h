@@ -1,9 +1,9 @@
 //
-// Created by dima on 28.12.22.
+// Created by dima on 02.01.23.
 //
 
-#ifndef CPP_LAB1_DATETIME_H
-#define CPP_LAB1_DATETIME_H
+#ifndef OOP3_DATETIME_H
+#define OOP3_DATETIME_H
 
 #include <iostream>
 #include <string>
@@ -12,10 +12,10 @@
 class DateTime {
 private:
     int year, // Год.
-        month, // Месяц.
-        day, // День.
-        hour, // Час.
-        minute; // Минута.
+    month, // Месяц.
+    day, // День.
+    hour, // Час.
+    minute; // Минута.
 
     // Поле с динамическим выделением памяти для хранения чисел месяца, введенного при инициализации объекта.
     // При использовании конструктора без параметров хранит в себе число 0.
@@ -73,7 +73,19 @@ public:
     void printDateTime(); // Распечатывает время и дату.
 
     static int getObjectsCounter(); // Геттер счетчика объектов.
+
+    DateTime &operator=(const DateTime &other); // Перегрузка оператора присваивания
+
+    DateTime operator+(const DateTime &other) const; // Перегрузка оператора сложения
+
+    DateTime operator-(const DateTime &other) const; // Перегрузка оператора вычитания
+
+    operator char *(); // Преобразование к типу char*
+
+    friend std::ostream &operator<<(std::ostream &os, const DateTime &dateTime); // Перегрузка оператора потока вывода
+
+    friend std::istream &operator>>(std::istream &is, DateTime &dateTime); // Перегрузка оператора потока ввода
 };
 
 
-#endif //CPP_LAB1_DATETIME_H
+#endif //OOP3_DATETIME_H
