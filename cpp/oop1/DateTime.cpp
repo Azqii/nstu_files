@@ -4,6 +4,7 @@
 
 #include "DateTime.h"
 
+
 int DateTime::objectsCounter = 0; // Присваивание значения статическому полю.
 
 DateTime::DateTime(int year, int month, int day, int hour, int minute) {
