@@ -2,9 +2,8 @@
 // Created by dima on 03.01.23.
 //
 
-#ifndef OOP4_TIME_H
-#define OOP4_TIME_H
-
+#ifndef OOP5_TIME_H
+#define OOP5_TIME_H
 
 #include "DateTime.h"
 
@@ -33,7 +32,9 @@ public:
     void plusMinute() override; // Прибавляет 1 минуту.
 
     void minusMinute() override; // Отнимает 1 минуту.
+
+    operator char *() override; // Преобразование к типу char*
 };
 
 
-#endif //OOP4_TIME_H
+#endif //OOP5_TIME_H

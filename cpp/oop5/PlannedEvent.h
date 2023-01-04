@@ -2,8 +2,8 @@
 // Created by dima on 03.01.23.
 //
 
-#ifndef OOP4_PLANNEDEVENT_H
-#define OOP4_PLANNEDEVENT_H
+#ifndef OOP5_PLANNEDEVENT_H
+#define OOP5_PLANNEDEVENT_H
 
 #include "DateTime.h"
 
@@ -22,14 +22,14 @@ public:
 
     void setEventName(std::string value); // Сеттер поля названия мероприятия
 
-    operator char *() override; // Преобразование к типу char*
-
     // Перегрузка оператора потока вывода
     friend std::ostream &operator<<(std::ostream &os, const PlannedEvent &plannedEvent);
 
     // Перегрузка оператора потока ввода
     friend std::istream &operator>>(std::istream &is, PlannedEvent &plannedEvent);
+
+    operator char *() override; // Преобразование к типу char*
 };
 
 
-#endif //OOP4_PLANNEDEVENT_H
+#endif //OOP5_PLANNEDEVENT_H

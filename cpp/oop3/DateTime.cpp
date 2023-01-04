@@ -106,7 +106,7 @@ int DateTime::daysInMonth(int monthNumber, int yearNumber) {
 
 void DateTime::setDay(int value) {
     if (this->month == 0)
-        throw std::logic_error("Сначала измените значение месяца");
+        throw std::invalid_argument("Сначала измените значение месяца");
 
     int currentMonthDays = DateTime::daysInMonth(this->month, this->year);
     // Рассчитано только на прибавление/убавление одного месяца из-за разного кол-ва дней в месяцах.

@@ -1,5 +1,5 @@
 //
-// Created by dima on 28.12.22.
+// Created by dima on 03.01.23.
 //
 
 #include "DateTime.h"
@@ -11,8 +11,6 @@ DateTime::DateTime(int year, int month, int day, int hour, int minute) {
     if (month > 12 || month <= 0 || day > DateTime::daysInMonth(month, year) || day <= 0 ||
         hour > 23 || hour < 0 || minute < 0 || minute > 59)
         throw std::invalid_argument("Такой даты не существует");
-
-    std::cout << "Вызван конструктор с параметрами для объекта в " << this << std::endl;
 
     this->year = year;
     this->month = month;
@@ -32,8 +30,6 @@ DateTime::DateTime(int year, int month, int day, int hour, int minute) {
 }
 
 DateTime::DateTime() {
-    std::cout << "Вызван конструктор по умолчанию для объекта в " << this << std::endl;
-
     this->year = 0;
     this->month = 0;
     this->day = 0;
@@ -49,8 +45,6 @@ DateTime::DateTime() {
 }
 
 DateTime::DateTime(const DateTime &other) {
-    std::cout << "Вызван конструктор копирования для объекта в " << this << std::endl;
-
     this->year = other.year;
     this->month = other.month;
     this->day = other.day;
@@ -69,8 +63,6 @@ DateTime::DateTime(const DateTime &other) {
 }
 
 DateTime::~DateTime() {
-    std::cout << "Вызван деструктор для объекта в " << this << std::endl;
-
     delete[] this->days;
     DateTime::objectsCounter--;
 }
@@ -219,4 +211,65 @@ void DateTime::printDateTime() {
 
 int DateTime::getObjectsCounter() {
     return DateTime::objectsCounter;
+}
+
+DateTime &DateTime::operator=(const DateTime &other) {
+    delete[] this->days;
+
+    this->year = other.year;
+    this->month = other.month;
+    this->day = other.day;
+    this->hour = other.hour;
+    this->minute = other.minute;
+    this->dateAsString = other.dateAsString;
+
+    int daysSize = this->daysInMonth(other.month, other.year);
+    this->days = new int[daysSize];
+    for (int i = 0; i < daysSize; i++) {
+        this->days[i] = other.days[i];
+    }
+
+    return *this;
+}
+
+DateTime DateTime::operator+(const DateTime &other) const {
+    DateTime tmp;
+    tmp.setYear(this->year + other.year);
+    tmp.setMonth(this->month + other.month);
+    tmp.setDay(this->day + other.day);
+    tmp.setHour(this->hour + other.hour);
+    tmp.setMinute(this->minute + other.minute);
+
+    tmp.setDateAsString();
+
+    return tmp;
+}
+
+DateTime DateTime::operator-(const DateTime &other) const {
+    DateTime tmp;
+    tmp.setYear(this->year - other.year);
+    tmp.setMonth(this->month - other.month);
+    tmp.setDay(this->day - other.day);
+    tmp.setHour(this->hour - other.hour);
+    tmp.setMinute(this->minute - other.minute);
+
+    tmp.setDateAsString();
+
+    return tmp;
+}
+
+DateTime::operator char *() {
+    return this->dateAsString.data();
+}
+
+std::ostream &operator<<(std::ostream &os, const DateTime &dateTime) {
+    os << dateTime.year << " " << dateTime.month << " " << dateTime.day << " " << dateTime.hour << " " << dateTime.minute;
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, DateTime &dateTime) {
+    int year, month, day, hour, minute;
+    is >> year >> month >> day >> hour >> minute;
+    dateTime = DateTime(year, month, day, hour, minute);
+    return is;
 }

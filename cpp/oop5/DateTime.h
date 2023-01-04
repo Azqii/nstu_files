@@ -2,8 +2,8 @@
 // Created by dima on 03.01.23.
 //
 
-#ifndef OOP4_DATETIME_H
-#define OOP4_DATETIME_H
+#ifndef OOP5_DATETIME_H
+#define OOP5_DATETIME_H
 
 #include <iostream>
 #include <string>
@@ -88,4 +88,4 @@ public:
 };
 
 
-#endif //OOP4_DATETIME_H
+#endif //OOP5_DATETIME_H
