@@ -2,8 +2,8 @@
 // Created by dima on 04.01.23.
 //
 
-#ifndef OOP5_STACK_H
-#define OOP5_STACK_H
+#ifndef OOP6_STACK_H
+#define OOP6_STACK_H
 
 #include "DateTime.h"
 
@@ -40,4 +40,4 @@ public:
 };
 
 
-#endif //OOP5_STACK_H
+#endif //OOP6_STACK_H

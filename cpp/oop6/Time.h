@@ -1,9 +1,9 @@
 //
-// Created by dima on 03.01.23.
+// Created by dima on 04.01.23.
 //
 
-#ifndef OOP5_TIME_H
-#define OOP5_TIME_H
+#ifndef OOP6_TIME_H
+#define OOP6_TIME_H
 
 #include "DateTime.h"
 
@@ -38,4 +38,4 @@ public:
 };
 
 
-#endif //OOP5_TIME_H
+#endif //OOP6_TIME_H
