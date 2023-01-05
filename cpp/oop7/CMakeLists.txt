@@ -3,4 +3,4 @@ project(oop7)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(oop7 main.cpp)
+add_executable(oop7 main.cpp Stack.h DateTime.cpp DateTime.h)
