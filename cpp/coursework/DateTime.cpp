@@ -173,3 +173,9 @@ std::istream &operator>>(std::istream &is, DateTime &dateTime) {
     dateTime = DateTime(year, month, day, hour, minute);
     return is;
 }
+
+std::fstream &operator<<(std::fstream &os, const DateTime &dateTime) {
+    os << dateTime.year << " " << dateTime.month << " " << dateTime.day << " " << dateTime.hour << " "
+       << dateTime.minute;
+    return os;
+}

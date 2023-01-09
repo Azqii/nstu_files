@@ -264,7 +264,8 @@ DateTime::operator char *() {
 }
 
 std::ostream &operator<<(std::ostream &os, const DateTime &dateTime) {
-    os << dateTime.year << " " << dateTime.month << " " << dateTime.day << " " << dateTime.hour << " " << dateTime.minute;
+    os << dateTime.day << "." << dateTime.month << "." << dateTime.year << " " << dateTime.hour << ":"
+       << dateTime.minute;
     return os;
 }
 
@@ -273,4 +274,10 @@ std::istream &operator>>(std::istream &is, DateTime &dateTime) {
     is >> year >> month >> day >> hour >> minute;
     dateTime = DateTime(year, month, day, hour, minute);
     return is;
+}
+
+std::fstream &operator<<(std::fstream &os, const DateTime &dateTime) {
+    os << dateTime.year << " " << dateTime.month << " " << dateTime.day << " " << dateTime.hour << " "
+       << dateTime.minute;
+    return os;
 }

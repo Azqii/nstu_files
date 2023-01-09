@@ -1,5 +1,3 @@
-#include <iostream>
-#include <fstream>
 #include "Rental.h"
 #include "LinkedList.h"
 
@@ -89,7 +87,7 @@ void fileWrite(LinkedList<Rental> &list) { // Запись в файл. Рабо
     if (fout.is_open()) {
         for (int i = 1; i <= list.getSize(); i++) {
             elem = list.peek(i);
-            fout.write((char*)elem, sizeof(Rental));
+            fout.write((char *) &elem, sizeof(Rental));
         }
         fout.close();
     }
@@ -105,7 +103,7 @@ void fileLoad(LinkedList<Rental> &list) { // Загрузка из файла. �
     fin.open(path, std::ifstream::in);
 
     if (fin.is_open()) {
-        while (fin.read((char*)elem, sizeof(Rental)))
+        while (fin.read((char *) &elem, sizeof(Rental)))
             list.pushBack(elem);
     }
 }
@@ -122,8 +120,8 @@ void menu(LinkedList<Rental> &list) { // Вывод меню
                   << "5. Посмотреть запись из списка." << std::endl
                   << "6. Отсортировать список." << std::endl
                   << "7. Подсчитать доход за заданный год/месяц." << std::endl << std::endl
-//                  << "8. Записать данные в файл" << std::endl
-//                  << "9. Загрузить данные из файла" << std::endl << std::endl
+                  //                  << "8. Записать данные в файл" << std::endl
+                  //                  << "9. Загрузить данные из файла" << std::endl << std::endl
                   << "0. Выйти" << std::endl << std::endl;
 
         std::cin >> choice;

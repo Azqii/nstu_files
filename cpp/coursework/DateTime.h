@@ -6,6 +6,7 @@
 #define CRS_DATETIME_H
 
 #include <iostream>
+#include <fstream>
 
 
 class DateTime {
@@ -51,6 +52,8 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const DateTime &dateTime); // Перегрузка оператора потока вывода
 
     friend std::istream &operator>>(std::istream &is, DateTime &dateTime); // Перегрузка оператора потока ввода
+
+    friend std::fstream &operator<<(std::fstream &os, const DateTime &dateTime);
 
     friend class Rental;
 };
