@@ -85,9 +85,10 @@ void DateTime::setMonth(int value) {
         this->setYear(this->year + addYears);
         value = (value - 1) % 12 + 1;
     } else if (value <= 0) {
-        int minusYears = (value + 1) / 12 - 1;
+        value--;
+        int minusYears = value / 12 - 1;
         this->setYear(this->year + minusYears);
-        value = 12 + (value - 1) % 12 + 1;
+        value = 12 + (value + 1) % 12;
     }
 
     this->month = value;
