@@ -29,6 +29,9 @@ public:
 
     // Перегрузка оператора потока ввода
     friend std::istream &operator>>(std::istream &is, PlannedEvent &plannedEvent);
+
+    // Перегрузка оператора потока вывода в файл
+    friend std::fstream &operator<<(std::fstream &os, PlannedEvent &plannedEvent);
 };
 
 

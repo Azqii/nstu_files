@@ -22,13 +22,16 @@ public:
 
     void setEventName(std::string value); // Сеттер поля названия мероприятия
 
+    operator char *() override; // Преобразование к типу char*
+
     // Перегрузка оператора потока вывода
     friend std::ostream &operator<<(std::ostream &os, const PlannedEvent &plannedEvent);
 
     // Перегрузка оператора потока ввода
     friend std::istream &operator>>(std::istream &is, PlannedEvent &plannedEvent);
 
-    operator char *() override; // Преобразование к типу char*
+    // Перегрузка оператора потока вывода в файл
+    friend std::fstream &operator<<(std::fstream &os, PlannedEvent &plannedEvent);
 };
 
 

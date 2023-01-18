@@ -33,6 +33,8 @@ public:
     void plusMinute() override; // Прибавляет 1 минуту.
 
     void minusMinute() override; // Отнимает 1 минуту.
+
+    operator char *() override; // Преобразование к типу char*
 };
 
 

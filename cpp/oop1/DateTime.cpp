@@ -21,12 +21,7 @@ DateTime::DateTime(int year, int month, int day, int hour, int minute) {
     this->minute = minute;
 
     this->setDateAsString();
-
-    int daysSize = DateTime::daysInMonth(this->month, this->year);
-    this->days = new int[daysSize];
-    for (int i = 0; i < daysSize; i++) {
-        this->days[i] = i + 1;
-    }
+    this->setDays();
 
     DateTime::objectsCounter++;
 }
@@ -58,25 +53,21 @@ DateTime::DateTime(const DateTime &other) {
     this->minute = other.minute;
 
     this->setDateAsString();
-
-    int daysSize = DateTime::daysInMonth(other.month, other.year);
-    this->days = new int[daysSize];
-    for (int i = 0; i < daysSize; i++) {
-        this->days[i] = other.days[i];
-    }
+    this->setDays();
 
     DateTime::objectsCounter++;
 }
 
 DateTime::~DateTime() {
     std::cout << "Вызван деструктор для объекта в " << this << std::endl;
-
     delete[] this->days;
     DateTime::objectsCounter--;
 }
 
 void DateTime::setYear(int value) {
     this->year = value;
+
+    this->setDateAsString();
 }
 
 void DateTime::setMonth(int value) {
@@ -92,6 +83,11 @@ void DateTime::setMonth(int value) {
     }
 
     this->month = value;
+
+    this->setDateAsString();
+
+    delete[] this->days;
+    this->setDays();
 }
 
 int DateTime::daysInMonth(int monthNumber, int yearNumber) {
@@ -128,6 +124,8 @@ void DateTime::setDay(int value) {
     }
 
     this->day = value;
+
+    this->setDateAsString();
 }
 
 void DateTime::setHour(int value) {
@@ -142,6 +140,8 @@ void DateTime::setHour(int value) {
     }
 
     this->hour = value;
+
+    this->setDateAsString();
 }
 
 void DateTime::setMinute(int value) {
@@ -156,6 +156,8 @@ void DateTime::setMinute(int value) {
     }
 
     this->minute = value;
+
+    this->setDateAsString();
 }
 
 void DateTime::setDateAsString() {
@@ -164,54 +166,52 @@ void DateTime::setDateAsString() {
             std::to_string(this->hour) + ":" + std::to_string(this->minute);
 }
 
+void DateTime::setDays() {
+    int daysSize = DateTime::daysInMonth(this->month, this->year);
+    this->days = new int[daysSize];
+    for (int i = 0; i < daysSize; i++) {
+        this->days[i] = i + 1;
+    }
+}
+
 void DateTime::plusYear() {
     this->setYear(this->year + 1);
-    this->setDateAsString();
 }
 
 void DateTime::minusYear() {
     this->setYear(this->year - 1);
-    this->setDateAsString();
 }
 
 void DateTime::plusMonth() {
     this->setMonth(this->month + 1);
-    this->setDateAsString();
 }
 
 void DateTime::minusMonth() {
     this->setMonth(this->month - 1);
-    this->setDateAsString();
 }
 
 void DateTime::plusDay() {
     this->setDay(this->day + 1);
-    this->setDateAsString();
 }
 
 void DateTime::minusDay() {
     this->setDay(this->day - 1);
-    this->setDateAsString();
 }
 
 void DateTime::plusHour() {
     this->setHour(this->hour + 1);
-    this->setDateAsString();
 }
 
 void DateTime::minusHour() {
     this->setHour(this->hour - 1);
-    this->setDateAsString();
 }
 
 void DateTime::plusMinute() {
     this->setMinute(this->minute + 1);
-    this->setDateAsString();
 }
 
 void DateTime::minusMinute() {
     this->setMinute(this->minute - 1);
-    this->setDateAsString();
 }
 
 void DateTime::printDateTime() {

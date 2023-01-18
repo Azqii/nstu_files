@@ -31,7 +31,6 @@ void Time::changeTime(int hour, int minute) {
     this->setHour(hour);
     this->setMinute(minute);
 
-    this->setDateAsString();
     this->setTimeAsString();
 }
 

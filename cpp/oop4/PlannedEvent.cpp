@@ -27,7 +27,7 @@ PlannedEvent::operator char *() {
 }
 
 std::ostream &operator<<(std::ostream &os, const PlannedEvent &plannedEvent) {
-    os << plannedEvent.year << " " << plannedEvent.month << " " << plannedEvent.day << " " << plannedEvent.hour << " "
+    os << plannedEvent.day << "." << plannedEvent.month << "." << plannedEvent.year << " " << plannedEvent.hour << ":"
        << plannedEvent.minute << " " << plannedEvent.eventName;
     return os;
 }
@@ -38,4 +38,10 @@ std::istream &operator>>(std::istream &is, PlannedEvent &plannedEvent) {
     is >> year >> month >> day >> hour >> minute >> eventName;
     plannedEvent = PlannedEvent(year, month, day, hour, minute, eventName);
     return is;
+}
+
+std::fstream &operator<<(std::fstream &os, PlannedEvent &plannedEvent) {
+    os << plannedEvent.year << " " << plannedEvent.month << " " << plannedEvent.day << " " << plannedEvent.hour << " "
+       << plannedEvent.minute << " " << plannedEvent.eventName;
+    return os;
 }

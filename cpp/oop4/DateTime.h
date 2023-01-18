@@ -9,15 +9,17 @@
 #include <string>
 #include <fstream>
 
+
 class DateTime {
 protected:
-    int year, // Год.
-    month, // Месяц.
-    day, // День.
-    hour, // Час.
-    minute; // Минута.
+    int
+        year, // Год.
+        month, // Месяц.
+        day, // День.
+        hour, // Час.
+        minute; // Минута.
 
-    // Поле с динамическим выделением памяти для хранения чисел месяца, введенного при инициализации объекта.
+    // Поле с динамическим выделением памяти для хранения чисел месяца.
     // При использовании конструктора без параметров хранит в себе число 0.
     // Сделано исключительно в учебных целях, поле с практической пользой для данного класса я придумать не смог.
     int *days;
@@ -28,6 +30,8 @@ protected:
 
 protected:
     void setDateAsString(); // Сеттер для поля строкового представления даты.
+
+    void setDays(); // Сеттер для поля с динамическим выделением памяти
 
     void setYear(int value); // Сеттер для поля года.
 
@@ -82,11 +86,15 @@ public:
 
     virtual operator char *(); // Преобразование к типу char*
 
+    void binWrite(std::fstream &file); // Метод для записи в бинарный файл
+
+    void binRead(std::fstream &file); // Метод для чтения из бинарного файла
+
     friend std::ostream &operator<<(std::ostream &os, const DateTime &dateTime); // Перегрузка оператора потока вывода
 
     friend std::istream &operator>>(std::istream &is, DateTime &dateTime); // Перегрузка оператора потока ввода
 
-    friend std::fstream &operator<<(std::fstream &os, const DateTime &dateTime);
+    friend std::fstream &operator<<(std::fstream &os, const DateTime &dateTime); // Перегрузка потока вывода в файл
 };
 
 

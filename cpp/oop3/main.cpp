@@ -40,7 +40,7 @@ void testDateTime(){
     // Запись объекта в бинарный файл
     file.open("./file.bin", std::fstream::out | std::ios::binary);
     if (file.is_open()) {
-        file.write((char*) &first_date, sizeof(DateTime));
+        first_date.binWrite(file);
         file.close();
     } else {
         std::cout << "Файл не открыт" << std::endl;
@@ -49,7 +49,7 @@ void testDateTime(){
     // Считывание объекта из бинарного файла
     file.open("./file.bin", std::fstream::in | std::ios::binary);
     if (file.is_open()) {
-        file.read((char*) &third_date, sizeof(DateTime));
+        third_date.binRead(file);
         file.close();
     } else {
         std::cout<< "Файл не открыт" << std::endl;

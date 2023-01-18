@@ -31,7 +31,6 @@ void Time::changeTime(int hour, int minute) {
     this->setHour(hour);
     this->setMinute(minute);
 
-    this->setDateAsString();
     this->setTimeAsString();
 }
 
@@ -57,4 +56,8 @@ void Time::plusMinute() {
 void Time::minusMinute() {
     DateTime::minusMinute();
     this->setTimeAsString();
+}
+
+Time::operator char *() {
+    return this->timeAsString.data();
 }
