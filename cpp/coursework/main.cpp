@@ -2,16 +2,10 @@
 #include "LinkedList.h"
 
 
-void addElem();
-
 void fillList(LinkedList<Rental> &list) { // Наполнение листа элементами в начале выполнения программы
-    auto first = new Rental("Bike", "Dima", 1000, DateTime(2022, 1, 9, 20, 0));
-    auto second = new Rental("Car", "Vova", 2000, DateTime(2022, 1, 10, 19, 30));
-    auto third = new Rental("Room", "Danil", 1500, DateTime(2022, 1, 8, 20, 0));
-
-    list.pushBack(first);
-    list.pushBack(second);
-    list.pushBack(third);
+    list.pushBack(new Rental("Bike", "Dima", 1000, DateTime(2022, 1, 9, 20, 0)));
+    list.pushBack(new Rental("Car", "Vova", 2000, DateTime(2022, 1, 10, 19, 30)));
+    list.pushBack(new Rental("Room", "Danil", 1500, DateTime(2022, 1, 8, 20, 0)));
 }
 
 void addElem(LinkedList<Rental> &list) { // Добавление элемента с клавиатуры
@@ -48,7 +42,10 @@ void delElem(LinkedList<Rental> &list) { // Удаление элемента и
     int number;
     std::cin >> number;
 
-    std::cout << *list.pop(number) << " удален" << std::endl;
+    Rental *elem = list.pop(number);
+    std::cout << *elem << " удален" << std::endl;
+    delete elem;
+    std::cout << "test";
 }
 
 void printElem(LinkedList<Rental> &list) { // Вывод на экран отдельного элемента из списка
@@ -75,36 +72,40 @@ int calculateProfit(LinkedList<Rental> &list) { // Подсчет дохода �
     return profit;
 }
 
-void fileWrite(LinkedList<Rental> &list) { // Запись в файл. Работает некорректно из-за полей с char*
+void fileWrite(LinkedList<Rental> &list) { // Запись в файл.
     std::cout << "Введите название файла:" << std::endl;
     std::string path;
     std::cin >> path;
 
     Rental *elem;
-    std::ofstream fout;
-    fout.open(path, std::ofstream::out);
+    std::fstream fout;
+    fout.open(path, std::fstream::out);
 
     if (fout.is_open()) {
         for (int i = 1; i <= list.getSize(); i++) {
             elem = list.peek(i);
-            fout.write((char *) &elem, sizeof(Rental));
+            elem->binWrite(fout);
         }
         fout.close();
     }
 }
 
-void fileLoad(LinkedList<Rental> &list) { // Загрузка из файла. Работает некорректно из-за полей с char*
+void fileLoad(LinkedList<Rental> &list) { // Загрузка из файла.
     std::cout << "Введите название файла:" << std::endl;
     std::string path;
     std::cin >> path;
 
-    Rental *elem = new Rental;
-    std::ifstream fin;
-    fin.open(path, std::ifstream::in);
+
+    std::fstream fin;
+    fin.open(path, std::fstream::in);
 
     if (fin.is_open()) {
-        while (fin.read((char *) &elem, sizeof(Rental)))
+        for (int i = 0; i < 3; i++) {
+            auto *elem = new Rental;
+            elem->binRead(fin);
             list.pushBack(elem);
+        }
+        fin.close();
     }
 }
 
@@ -119,9 +120,9 @@ void menu(LinkedList<Rental> &list) { // Вывод меню
                   << "4. Удалить запись из списка." << std::endl
                   << "5. Посмотреть запись из списка." << std::endl
                   << "6. Отсортировать список." << std::endl
-                  << "7. Подсчитать доход за заданный год/месяц." << std::endl << std::endl
-                  //                  << "8. Записать данные в файл" << std::endl
-                  //                  << "9. Загрузить данные из файла" << std::endl << std::endl
+                  << "7. Подсчитать доход за заданный год/месяц." << std::endl
+                  << "8. Записать данные в файл" << std::endl
+                  << "9. Загрузить данные из файла" << std::endl << std::endl
                   << "0. Выйти" << std::endl << std::endl;
 
         std::cin >> choice;
@@ -148,12 +149,12 @@ void menu(LinkedList<Rental> &list) { // Вывод меню
             case 7:
                 std::cout << calculateProfit(list) << " Рублей" << std::endl;
                 break;
-//            case 8:
-//                fileWrite(list);
-//                break;
-//            case 9:
-//                fileLoad(list);
-//                break;
+            case 8:
+                fileWrite(list);
+                break;
+            case 9:
+                fileLoad(list);
+                break;
             case 0:
                 return;
             default:

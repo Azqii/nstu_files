@@ -6,34 +6,26 @@
 #include "Rental.h"
 
 Rental::Rental(const char *objectName, const char *customerName, int pricePerDay, DateTime receiveTime) {
-    this->setObjectName(objectName);
-    this->setCustomerName(customerName);
+    this->objectName = new char[strlen(objectName) + 1];
+    std::strcpy(this->objectName, objectName);
+
+    this->customerName = new char[strlen(customerName) + 1];
+    std::strcpy(this->customerName, customerName);
+
     this->pricePerDay = pricePerDay;
     this->receiveTime = receiveTime;
 }
 
-
-
 Rental::Rental() {
-    this->objectName = "";
-    this->customerName = "";
-    this->pricePerDay = 0;
+    this->objectName = nullptr;
+    this->customerName = nullptr;
+    this->pricePerDay = int();
     this->receiveTime = DateTime();
 }
 
 Rental::~Rental() {
     delete[] this->objectName;
     delete[] this->customerName;
-}
-
-void Rental::setObjectName(const char *value) {
-    this->objectName = new char[strlen(value) + 1];
-    std::strcpy(this->objectName, value);
-}
-
-void Rental::setCustomerName(const char *value) {
-    this->customerName = new char[strlen(value) + 1];
-    std::strcpy(this->customerName, value);
 }
 
 void Rental::setReturnTime(DateTime value) {
@@ -65,6 +57,52 @@ bool Rental::operator>(const Rental &other) const {
 
 bool Rental::operator<(const Rental &other) const {
     return this->receiveTime < other.receiveTime;
+}
+
+void Rental::binWrite(std::fstream &file) {
+    if (!file.is_open())
+        throw std::invalid_argument("Файл не открыт");
+
+    // Запись поля названия объекта
+    unsigned int len = strlen(this->objectName);
+    file.write((char *) &len, sizeof(len));
+    file.write(this->objectName, len);
+
+    // Запись поля имени арендатора
+    len = strlen(this->customerName);
+    file.write((char *) &len, sizeof(len));
+    file.write(this->customerName, len);
+
+    // Запись остальных полей
+    file.write((char *) &this->pricePerDay, sizeof(this->pricePerDay));
+    file.write((char *) &this->receiveTime, sizeof(this->receiveTime));
+    file.write((char *) &this->returnTime, sizeof(this->returnTime));
+}
+
+void Rental::binRead(std::fstream &file) {
+    if (!file.is_open())
+        throw std::invalid_argument("Файл не открыт");
+
+    unsigned int len;
+
+    // Считывание поля названия объекта
+    delete[] this->objectName;
+    file.read((char *) &len, sizeof(len));
+    this->objectName = new char[len + 1];
+    file.read(this->objectName, len);
+    this->objectName[len] = '\0';
+
+    // Считывание поля имени арендатора
+    delete[] this->customerName;
+    file.read((char *) &len, sizeof(len));
+    this->customerName = new char[len + 1];
+    file.read(this->customerName, len);
+    this->objectName[len] = '\0';
+
+    // Считывание остальных полей
+    file.read((char *) &this->pricePerDay, sizeof(this->pricePerDay));
+    file.read((char *) &this->receiveTime, sizeof(this->receiveTime));
+    file.read((char *) &this->returnTime, sizeof(this->returnTime));
 }
 
 std::ostream &operator<<(std::ostream &os, const Rental &rental) {

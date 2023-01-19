@@ -12,11 +12,11 @@ template<class T>
 class LinkedList { // Двусвязный циклический список
 private:
     struct Node { // Элемент списка;
-        T *data;
-        Node *prev;
-        Node *next;
+        T *data; // Данные, записанные в элемент
+        Node *prev; // Ссылка на предыдущий элемент
+        Node *next; // Ссылка на следующий элемент
 
-        explicit Node(T *data);
+        explicit Node(T *data); // Конструктор элемента списка
     };
 
     Node
@@ -27,7 +27,7 @@ private:
             size; // Размер списка
 
 private:
-    Node *getElement(int position);
+    Node *getElement(int position); // Метод получения узла по его номеру (для внутреннего пользования)
 
 
 public:
