@@ -94,13 +94,16 @@ void fileLoad(LinkedList<Rental> &list) { // Загрузка из файла.
     std::cout << "Введите название файла:" << std::endl;
     std::string path;
     std::cin >> path;
+    std::cout << "Введите количество элементов для загрузки:" << std::endl;
+    int elementsNumber;
+    std::cin >> elementsNumber;
 
 
     std::fstream fin;
     fin.open(path, std::fstream::in);
 
     if (fin.is_open()) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < elementsNumber; i++) {
             auto *elem = new Rental;
             elem->binRead(fin);
             list.pushBack(elem);
