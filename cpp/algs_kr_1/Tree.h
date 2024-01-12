@@ -29,17 +29,19 @@ public:
     class Iterator {
     private:
         Tree* ptr;
-        Node* cur;
+        Node* current;
+
+        Node* getNextParent(Node* fromNode);
 
     public:
-        Iterator(Tree*); // TODO
-        K& operator *(); // TODO
-        Iterator& operator ++(); // TODO
-        bool operator ==(const Iterator&); // TODO
+        explicit Iterator(Tree* tree);
+        K& operator *();
+        Iterator& operator ++();
+        bool operator ==(const Iterator&);
     };
 
-    Iterator begin(); // TODO
-    Iterator end(); // TODO
+    Iterator begin();
+    Iterator end();
 
     Tree();
     int getSize() const;
@@ -50,7 +52,7 @@ public:
     void remove(K key);
     void printKeysByScheme() const;
     void printStructure() const;
-    K searchBySerialNumber(int serialNumber) const; // TODO
+    K searchBySerialNumber(int serialNumber);
 };
 
 
@@ -60,6 +62,85 @@ Tree<K, V>::Node::Node(K key, V value) {
     this->value = value;
     this->left = nullptr;
     this->right = nullptr;
+}
+
+template <class K, class V>
+Tree<K, V>::Iterator::Iterator(Tree* tree) {
+    this->ptr = tree;
+
+    this->current = tree->root;
+    if (this->current != nullptr) {
+        while (this->current->left != nullptr) {
+            this->current = this->current->left;
+        }
+    }
+}
+
+template <class K, class V>
+K& Tree<K, V>::Iterator::operator*() {
+    if (this->current == nullptr) {
+        throw std::invalid_argument("Последний элемент нельзя разыменовывать");
+    }
+    return this->current->key;
+}
+
+template <class K, class V>
+typename Tree<K, V>::Node* Tree<K, V>::Iterator::getNextParent(Node* fromNode) {
+    Node* pred = this->ptr->root;
+
+    if (pred == fromNode) {
+        return nullptr;
+    }
+
+    while (pred->left != fromNode && pred->right != fromNode) {
+        if (pred->key > fromNode->key) {
+            pred = pred->left;
+        }
+        else {
+            pred = pred->right;
+        }
+    }
+    if (pred->key < fromNode->key) {
+        return this->getNextParent(pred);
+    }
+    return pred;
+}
+
+template <class K, class V>
+typename Tree<K, V>::Iterator& Tree<K, V>::Iterator::operator++() {
+    if (this->current == nullptr) {
+        throw std::invalid_argument("Вы уже на последнем элементе дерева");
+    }
+
+    if (this->current->right != nullptr) {
+        this->current = this->current->right;
+        while (this->current->left != nullptr) {
+            this->current = this->current->left;
+        }
+    }
+    else {
+        this->current = this->getNextParent(this->current);
+    }
+    return *this;
+}
+
+template <class K, class V>
+bool Tree<K, V>::Iterator::operator==(const Iterator& other) {
+    return this->current == other.current;
+}
+
+template <class K, class V>
+typename Tree<K, V>::Iterator Tree<K, V>::begin() {
+    return Iterator(this);
+}
+
+template <class K, class V>
+typename Tree<K, V>::Iterator Tree<K, V>::end() {
+    Iterator temp = Iterator(this);
+    for (int i = 0; i < this->getSize(); i++) {
+        ++temp;
+    }
+    return temp;
 }
 
 template <class K, class V>
@@ -148,7 +229,7 @@ V Tree<K, V>::search(K key) const {
         }
     }
     if (node == nullptr) {
-        throw std::invalid_argument("There's no such node with the given key");
+        throw std::invalid_argument("В дереве нет узла с переданным ключем");
     }
     return node->value;
 }
@@ -227,7 +308,7 @@ void Tree<K, V>::printKeysByScheme() const {
 }
 
 template <class K, class V>
-void Tree<K, V>::showKeyWithIndent(Node* node, int level) const {
+void Tree<K, V>::showKeyWithIndent(Node* node, const int level) const {
     if (node == nullptr) {
         return;
     }
@@ -244,6 +325,15 @@ template <class K, class V>
 void Tree<K, V>::printStructure() const {
     this->showKeyWithIndent(this->root, 0);
     std::cout << std::endl;
+}
+
+template <class K, class V>
+K Tree<K, V>::searchBySerialNumber(const int serialNumber) {
+    Iterator iterator = this->begin();
+    for (int i = 0; i < serialNumber; i++) {
+        ++iterator;
+    }
+    return *iterator;
 }
 
 
