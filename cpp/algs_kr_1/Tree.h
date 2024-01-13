@@ -35,7 +35,7 @@ public:
 
     public:
         explicit Iterator(Tree* tree);
-        K& operator *();
+        V& operator *();
         Iterator& operator ++();
         bool operator ==(const Iterator&);
     };
@@ -77,11 +77,11 @@ Tree<K, V>::Iterator::Iterator(Tree* tree) {
 }
 
 template <class K, class V>
-K& Tree<K, V>::Iterator::operator*() {
+V& Tree<K, V>::Iterator::operator*() {
     if (this->current == nullptr) {
         throw std::invalid_argument("Последний элемент нельзя разыменовывать");
     }
-    return this->current->key;
+    return this->current->value;
 }
 
 template <class K, class V>
@@ -177,7 +177,6 @@ void Tree<K, V>::insert(K key, V value) {
     while (node != nullptr) {
         pred = node;
         if (key == node->key) {
-            node->value = value;
             return;
         }
 
