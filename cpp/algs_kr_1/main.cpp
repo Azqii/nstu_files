@@ -1,5 +1,5 @@
 #include <iostream>
-// #include <windows.h>
+// #include <windows.h> // Comment on linux
 #include "Tree.h"
 
 #pragma execution_character_set("utf-8")
@@ -7,8 +7,8 @@
 using std::cout, std::cin, std::endl;
 
 int main() {
-    // SetConsoleOutputCP(65001);
-    // SetConsoleCP(65001);
+    // SetConsoleOutputCP(65001);  // Comment on linux
+    // SetConsoleCP(65001);  // Comment on linux
 
     Tree<int, int> tree;
     Tree<int, int>::Iterator it = tree.begin();
@@ -41,7 +41,6 @@ int main() {
 
                     cin >> key >> value;
                     tree.insert(key, value);
-
                     break;
                 }
                 case 2: {
@@ -49,29 +48,24 @@ int main() {
 
                     cin >> key;
                     tree.remove(key);
-
                     break;
                 }
                 case 3: {
                     cout << tree.getSize() << endl;
-
                     break;
                 }
                 case 4: {
                     tree.clear();
-
                     break;
                 }
                 case 5: {
                     cout << tree.isEmtpy() << endl;
-
                     break;
                 }
                 case 6: {
                     cout << endl;
 
                     tree.printKeysByScheme();
-
                     break;
                 }
                 case 7: {
@@ -80,14 +74,12 @@ int main() {
                     cin >> serialNumber;
 
                     cout << endl << tree.searchBySerialNumber(serialNumber) << endl;
-
                     break;
                 }
                 case 8: {
                     cout << endl;
 
                     tree.printStructure();
-
                     break;
                 }
                 case 9: {
@@ -95,7 +87,6 @@ int main() {
 
                     cin >> key;
                     cout << tree.search(key) << endl;
-
                     break;
                 }
                 case 10: {
@@ -108,18 +99,14 @@ int main() {
                 }
                 case 12: {
                     ++it;
-
                     break;
                 }
                 case 13: {
                     cin >> *it;
-
                     break;
-
                 }
                 default: {
                     cout << "Такой команды не существует" << endl;
-
                     break;
                 }
             }
