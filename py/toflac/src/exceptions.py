@@ -1,0 +1,6 @@
+class TokenMismatchException(Exception):
+    ...
+
+
+class SyntaxException(Exception):
+    ...
