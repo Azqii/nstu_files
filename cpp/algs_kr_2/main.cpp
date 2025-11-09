@@ -1,59 +1,96 @@
+#include <iostream>
+#include <windows.h> // Comment on linux
 #include "Graph.h"
 
-#include <iostream>
+#pragma execution_character_set("utf-8")
+
+using std::cout, std::cin, std::endl;
 
 int main() {
-    auto graph = Graph(5);
+    SetConsoleOutputCP(65001);  // Comment on linux
+    SetConsoleCP(65001);  // Comment on linux
 
-    std::cout << "Empty graph nodes: " << graph.V() << std::endl;
-    std::cout << "Empty graph edges: " << graph.E() << std::endl << std::endl;
+    auto graph = Graph<int>(0);
 
-    std::cout << "Adding edges between 1 -> 3, 5, 2 -> 3 and 3 -> 4, 5" << std::endl << std::endl;
-    graph.Insert(1, 3);
-    graph.Insert(1, 5);
-    graph.Insert(2, 3);
-    graph.Insert(3, 4);
-    graph.Insert(3, 5);
+    int x;
+    while (true) {
+        cout << endl << "Выбор действия:" << endl << endl;
+        cout << "1. Создать граф с заданным кол-вом вершин" << endl;
+        cout << "2. Вставка ребра" << endl;
+        cout << "3. Удаление ребра" << endl;
+        cout << "4. Число вершин" << endl;
+        cout << "5. Число ребер" << endl;
+        cout << "6. Проверка наличия ребра" << endl;
+        cout << "7. Указание веса ребра" << endl;
+        cout << "8. Напечатать структуру графа" << endl;
+        cout << "9. Определение центра взвешенного орграфа на основе алгоритма Флойда" << endl;
 
-    std::cout << "Graph with edges without data:" << std::endl;
-    graph.Show();
-    std::cout << std::endl;
+        cout << endl;
+        cin >> x;
+        cout << endl;
 
-    if (graph.Edge(1, 3)) {
-        std::cout << "This line is printed if there's edge between 1 -> 3" << std::endl;
+        try {
+            switch (x) {
+                case 1: {
+                    int size;
+                    cin >> size;
+                    graph.~Graph();
+                    new (&graph) Graph<int>(size);
+                    break;
+                }
+                case 2: {
+                    int v1, v2;
+                    cin >> v1 >> v2;
+                    graph.Insert(v1, v2);
+                    break;
+                }
+                case 3: {
+                    int v1, v2;
+                    cin >> v1 >> v2;
+                    graph.Delete(v1, v2);
+                    break;
+                }
+                case 4: {
+                    cout << graph.V() << endl;
+                    break;
+                }
+                case 5: {
+                    cout << graph.E() << endl;
+                    break;
+                }
+                case 6: {
+                    int v1, v2;
+                    cin >> v1 >> v2;
+                    cout << graph.Edge(v1, v2) << endl;
+                    break;
+                }
+                case 7: {
+                    int v1, v2, weight;
+                    cin >> v1 >> v2 >> weight;
+                    graph.SetEdge(v1, v2, weight);
+                    break;
+                }
+                case 8: {
+                    graph.Show();
+                    break;
+                }
+                case 9: {
+                    std::vector<int> centerNodes = graph.Task();
+                    std::cout << "Центр: ";
+                    for (const int node : centerNodes) {
+                        std::cout << node << " ";
+                    }
+                    break;
+                }
+                default: {
+                    cout << "Такой команды не существует" << endl;
+                    break;
+                }
+            }
+        }
+        catch(...) {
+            std::cout << "Исключение" << std::endl;
+        }
     }
-    if (!graph.Edge(1, 4)) {
-        std::cout << "This line is printes if there's NO edge between 1 -> 4" << std::endl << std::endl;
-    }
-
-    std::cout << "Setting 1 -> 3 edge size to 5 and 3 -> 5 to 6 and deleting 1 -> 5 edge" << std::endl << std::endl;
-    graph.SetEdge(1, 3, 5);
-    graph.SetEdge(3, 5, 6);
-    graph.Delete(1, 5);
-
-    std::cout << "Graph after changes:" << std::endl;
-    graph.Show();
-    std::cout << std::endl;
-
-
-    Graph graphTaskTest(5);
-
-    graphTaskTest.Insert(1, 2, 2);
-    graphTaskTest.Insert(2, 3, 1);
-    graphTaskTest.Insert(3, 4, 3);
-    graphTaskTest.Insert(4, 5, 5);
-    graphTaskTest.Insert(2, 4, 2);
-    graphTaskTest.Insert(3, 5, 1);
-
-    std::cout << "New graph for Task() test: " << std::endl;
-    graphTaskTest.Show();
-
-    std::vector<int> centerNodes = graphTaskTest.Task();
-
-    std::cout << "Center nodes: ";
-    for (const int node : centerNodes) {
-        std::cout << node << " ";
-    }
-
     return 0;
 }
