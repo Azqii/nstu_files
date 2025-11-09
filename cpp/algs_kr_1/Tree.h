@@ -14,14 +14,19 @@ protected:
         K key;
         V value;
         Node *left, *right;
+        int size;
 
         Node(K key, V value);
     };
 
-    int countAllSubNodes(Node* node) const;
     void removeAllSubNodes(Node*& node);
     void printAllKeysByScheme(Node* node) const;
     void showKeyWithIndent(Node* node, int level) const;
+
+    // Вспомогательные методы для работы с размерами
+    void updateNodeSize(Node* node);
+    int getNodeSize(Node* node) const;
+    void updateSizesAlongPath(K key);
 
     Node* root;
 
@@ -62,6 +67,7 @@ Tree<K, V>::Node::Node(K key, V value) {
     this->value = value;
     this->left = nullptr;
     this->right = nullptr;
+    this->size = 1;
 }
 
 template <class K, class V>
@@ -149,20 +155,8 @@ Tree<K, V>::Tree() {
 }
 
 template <class K, class V>
-int Tree<K, V>::countAllSubNodes(Node* node) const {
-    int counter = 0;
-    if (node == nullptr) {
-        return counter;
-    }
-    counter += this->countAllSubNodes(node->left);
-    counter += this->countAllSubNodes(node->right);
-    counter++;
-    return counter;
-}
-
-template <class K, class V>
 int Tree<K, V>::getSize() const {
-    return this->countAllSubNodes(this->root);
+    return this->getNodeSize(this->root);
 }
 
 template <class K, class V>
@@ -187,12 +181,15 @@ void Tree<K, V>::insert(K key, V value) {
             node = node->right;
         }
     }
+
     if (key < pred->key) {
         pred->left = new Node(key, value);
     }
     else {
         pred->right = new Node(key, value);
     }
+
+    updateSizesAlongPath(key);
 }
 
 template <class K, class V>
@@ -260,7 +257,10 @@ void Tree<K, V>::remove(K key) {
             newNode = node->left;
         }
 
-        if (node == pred->left) {
+        if (pred == nullptr) {
+            this->root = newNode;
+        }
+        else if (node == pred->left) {
             pred->left = newNode;
         }
         else {
@@ -268,24 +268,35 @@ void Tree<K, V>::remove(K key) {
         }
 
         delete node;
+
+        if (pred != nullptr) {
+            this->updateSizesAlongPath(pred->key);
+        }
+        else if (this->root != nullptr) {
+            this->updateNodeSize(this->root);
+        }
     }
     else {
-        Node* parent = nullptr;
+        Node* parent = node;
         Node* temp = node->right;
 
         while (temp->left != nullptr) {
             parent = temp;
             temp = temp->left;
         }
-        if (parent != nullptr) {
-            parent->left = temp->right;
-        }
-        else {
-            node->right = temp->right;
-        }
 
         node->key = temp->key;
+        node->value = temp->value;
+
+        if (parent == node) {
+            parent->right = temp->right;
+        }
+        else {
+            parent->left = temp->right;
+        }
         delete temp;
+
+        updateSizesAlongPath(parent->key);
     }
 }
 
@@ -298,7 +309,6 @@ void Tree<K, V>::printAllKeysByScheme(Node* node) const {
     this->printAllKeysByScheme(node->right);
     std::cout << node->key << " ";
 }
-
 
 template <class K, class V>
 void Tree<K, V>::printKeysByScheme() const {
@@ -319,7 +329,6 @@ void Tree<K, V>::showKeyWithIndent(Node* node, const int level) const {
     this->showKeyWithIndent(node->left, level + 1);
 }
 
-
 template <class K, class V>
 void Tree<K, V>::printStructure() const {
     this->showKeyWithIndent(this->root, 0);
@@ -328,11 +337,59 @@ void Tree<K, V>::printStructure() const {
 
 template <class K, class V>
 K Tree<K, V>::searchBySerialNumber(const int serialNumber) {
-    Iterator iterator = this->begin();
-    for (int i = 0; i < serialNumber; i++) {
-        ++iterator;
+    if (serialNumber < 0 || serialNumber >= this->getSize()) {
+        throw std::invalid_argument("Индекс выходит за границы дерева");
     }
-    return *iterator;
+
+    Node* node = this->root;
+    int currentIndex = serialNumber;
+
+    while (node != nullptr) {
+        int leftSize = this->getNodeSize(node->left);
+
+        if (currentIndex < leftSize) {
+            node = node->left;
+        }
+        else if (currentIndex == leftSize) {
+            return node->key;
+        }
+        else {
+            currentIndex = currentIndex - leftSize - 1;
+            node = node->right;
+        }
+    }
+
+    throw std::invalid_argument("Индекс выходит за границы дерева");
+}
+
+template <class K, class V>
+void Tree<K, V>::updateNodeSize(Node* node) {
+    if (node == nullptr) {
+        return;
+    }
+    node->size = 1 + this->getNodeSize(node->left) + this->getNodeSize(node->right);
+}
+
+template <class K, class V>
+int Tree<K, V>::getNodeSize(Node* node) const {
+    return node == nullptr ? 0 : node->size;
+}
+
+template <class K, class V>
+void Tree<K, V>::updateSizesAlongPath(K key) {
+    Node* node = this->root;
+    while (node != nullptr) {
+        this->updateNodeSize(node);
+        if (key < node->key) {
+            node = node->left;
+        }
+        else if (key > node->key) {
+            node = node->right;
+        }
+        else {
+            break;
+        }
+    }
 }
 
 

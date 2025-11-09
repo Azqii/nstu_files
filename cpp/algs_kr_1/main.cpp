@@ -1,5 +1,5 @@
 #include <iostream>
-// #include <windows.h> // Comment on linux
+#include <windows.h> // Comment on linux
 #include "Tree.h"
 
 #pragma execution_character_set("utf-8")
@@ -7,8 +7,8 @@
 using std::cout, std::cin, std::endl;
 
 int main() {
-    // SetConsoleOutputCP(65001);  // Comment on linux
-    // SetConsoleCP(65001);  // Comment on linux
+    SetConsoleOutputCP(65001);  // Comment on linux
+    SetConsoleCP(65001);  // Comment on linux
 
     Tree<int, int> tree;
     Tree<int, int>::Iterator it = tree.begin();
@@ -22,7 +22,7 @@ int main() {
         cout << "4. Очистить дерево" << endl;
         cout << "5. Проверить дерево на пустоту" << endl;
         cout << "6. Обойти дерево (Lt -> Rt -> t)" << endl;
-        cout << "7. Дополнительная операция: поиск k –го по порядку ключа в деревепоиск k –го по порядку ключа в дереве" << endl;
+        cout << "7. Дополнительная операция: поиск k–го по порядку ключа в дереве" << endl;
         cout << "8. Напечатать дерево" << endl;
         cout << "9. Поиск элемента по ключу" << endl;
         cout << "10. Обнулить итератор (.begin())" << endl;
