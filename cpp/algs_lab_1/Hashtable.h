@@ -44,8 +44,8 @@ public:
 
     public:
         Iterator(const Hashtable* parent, size_t bucket, bool end_flag);
-        Node& operator*();
-        Node* operator->();
+        T& operator*();
+        T* operator->();
         Iterator& operator++();
         bool operator==(const Iterator& other) const;
         bool operator!=(const Iterator& other) const;
@@ -101,14 +101,14 @@ Hashtable<T>::Iterator::Iterator(const Hashtable<T> *parent, size_t bucket, bool
 
 
 template<class T>
-typename Hashtable<T>::Node &Hashtable<T>::Iterator::operator*() {
-    return *it;
+T &Hashtable<T>::Iterator::operator*() {
+    return this->it->data;
 }
 
 
 template<class T>
-typename Hashtable<T>::Node *Hashtable<T>::Iterator::operator->() {
-    return &(*it);
+T *Hashtable<T>::Iterator::operator->() {
+    return &(this->it->data);
 }
 
 
