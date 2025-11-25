@@ -64,7 +64,7 @@ int main() {
                     string key;
                     cin >> key;
 
-                    cout << table.find(key) << endl;
+                    cout << *table.find(key) << endl;
                     break;
                 }
                 case 5: {
