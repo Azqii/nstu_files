@@ -65,6 +65,7 @@ public:
     void show() const;
     size_t getLastHash() const;
     size_t getLastProbeCount() const;
+    size_t getBucketSize(size_t index) const;
 };
 
 
@@ -288,6 +289,15 @@ size_t Hashtable<T>::getLastHash() const {
 template<class T>
 size_t Hashtable<T>::getLastProbeCount() const {
     return this->lastProbeCount;
+}
+
+
+template<class T>
+size_t Hashtable<T>::getBucketSize(size_t index) const {
+    if (index >= this->capacity) {
+        return 0;
+    }
+    return this->table[index].size();
 }
 
 
