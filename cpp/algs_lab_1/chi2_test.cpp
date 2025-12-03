@@ -5,6 +5,7 @@
 #include <string>
 #include <ctime>
 #include <iostream>
+#include <cmath>
 #include <windows.h>  // comment on Linux
 #include "Hashtable.h"
 
@@ -35,24 +36,35 @@ double computeChi2(const std::vector<size_t>& freq, size_t P, size_t m)
 }
 
 
-double runOneExperiment(size_t m, size_t P) {
+double runOneExperiment(size_t m, bool printRange) {
     Hashtable<int> table(m);
+
+    size_t actual_m = table.getCapacity();
+    size_t P = actual_m * 20;
+
+    if (printRange) {
+        std::cout << "Диапазон допустимых значений: " << actual_m - sqrt(actual_m) <<
+        " <= X^2 <= " << actual_m + sqrt(actual_m) << std::endl;
+    }
 
     for (size_t i = 0; i < P; ++i)
         table.insert(randomKey(), 0);
 
-    std::vector<size_t> freq(m);
-    for (size_t i = 0; i < m; ++i)
+    std::vector<size_t> freq(actual_m);
+    for (size_t i = 0; i < actual_m; ++i)
         freq[i] = table.getBucketSize(i);
 
-    return computeChi2(freq, P, m);
+    double result = computeChi2(freq, P, actual_m);
+    std::cout << "X^2 для отдельного эксперимента: " << result << std::endl;
+
+    return result;
 }
 
 
-double runChi2Series(size_t m, size_t P, int experiments) {
+double runChi2Series(size_t m, int experiments) {
     double sum = 0;
     for (int i = 0; i < experiments; ++i) {
-        sum += runOneExperiment(m, P);
+        sum += runOneExperiment(m, i == 0);
     }
 
     return sum / experiments;
@@ -64,13 +76,12 @@ int main() {
     SetConsoleCP(65001);  // Comment on linux
 
     size_t m = 101;
-    size_t P = 10100;
     int experiments = 20;
 
     std::srand(std::time(nullptr));
 
-    double chi2 = runChi2Series(m, P, experiments);
-    std::cout << "Среднее Хи^2 на основе 20 экспериментов = " << chi2 << std::endl;
+    double chi2 = runChi2Series(m, experiments);
+    std::cout << "Среднее X^2 на основе 20 экспериментов = " << chi2 << std::endl;
 
     return 0;
 }

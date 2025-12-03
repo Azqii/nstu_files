@@ -11,7 +11,7 @@ int main() {
     SetConsoleOutputCP(65001);  // Comment on linux
     SetConsoleCP(65001);  // Comment on linux
 
-    Hashtable<int> table(10);
+    Hashtable<int> table(20);
     Hashtable<int>::Iterator it = table.begin();
 
     int x;

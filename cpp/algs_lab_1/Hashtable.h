@@ -8,6 +8,7 @@
 #include <list>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 
 template<class T>
@@ -20,6 +21,8 @@ protected:
         Node(const std::string& key, const T& data);
     };
 
+    static std::vector<int> MersenneNumbers;
+
     std::vector<std::list<Node>> table;
     size_t capacity;
     size_t size;
@@ -27,6 +30,7 @@ protected:
     size_t lastHashValue;
     size_t lastProbeCount;
 
+    int findSuitableMersenneNumber(int number);
     // Конкатенация битовых образов символов строки -> k'
     size_t keyToNat(const std::string& key) const;
     // Модульная хеш-функция
@@ -66,6 +70,13 @@ public:
     size_t getLastHash() const;
     size_t getLastProbeCount() const;
     size_t getBucketSize(size_t index) const;
+};
+
+
+template<class T>
+std::vector<int> Hashtable<T>::MersenneNumbers = {
+        7, 13, 31, 61, 127, 251, 509, 1021, 2039, 4093, 8191, 16381, 32749, 65521, 131071,
+        262139, 524287, 1048573, 2097143, 4194301, 8388593, 16777213, 33554393
 };
 
 
@@ -160,8 +171,19 @@ typename Hashtable<T>::Iterator Hashtable<T>::end() const {
 
 
 template<class T>
+int Hashtable<T>::findSuitableMersenneNumber(int number) {
+    for (number; number >= 7; number--) {
+        if (std::find(MersenneNumbers.begin(), MersenneNumbers.end(), number) != MersenneNumbers.end()) {
+            return number;
+        }
+    }
+    throw std::invalid_argument("Нет подходящего числа Мерсенне");
+}
+
+
+template<class T>
 Hashtable<T>::Hashtable(size_t capacity) {
-    this->capacity = capacity;
+    this->capacity = this->findSuitableMersenneNumber(capacity / 2);
     this->size = 0;
     this->lastHashValue = 0;
     this->lastProbeCount = 0;
@@ -201,11 +223,17 @@ void Hashtable<T>::clear() {
 
 template<class T>
 size_t Hashtable<T>::keyToNat(const std::string &key) const {
-    size_t acc = 0;
-    for (unsigned char c : key) {
-        acc = (acc << 8) | c;
+    size_t k = 0, kk = 0;
+    for (int i = 0; i < key.length(); i++) {
+        if ((i + 1) % 6 == 0) {
+            kk = kk ^ k;
+            k = 0;
+        }
+        k = k << 5;
+        k = k | key[i] - 'a' + 1;
     }
-    return acc;
+    kk = kk ^ k;
+    return kk;
 }
 
 
